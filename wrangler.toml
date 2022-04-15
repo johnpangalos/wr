@@ -1,0 +1,33 @@
+name = "remix-cloudflare-workers"
+type = "javascript"
+
+zone_id = ""
+account_id = ""
+route = ""
+workers_dev = true
+
+[site]
+bucket = "./public"
+entry-point = "."
+
+[build]
+command = "npm run build:worker"
+watch_dir = "./build/index.mjs"
+
+[build.upload]
+format = "modules"
+dir = "dist"
+main = "worker.mjs"
+
+kv_namespaces = [ 
+  { binding = "WR", id = "e77e5255ba6b431d9fd570513823d4cc" }
+]
+
+[durable_objects]
+bindings = [
+  # Object1 class must be exported from the main script
+  { name = "OBJECT1", class_name = "Object1" },
+]
+
+[miniflare]
+env_path=".env.local"
